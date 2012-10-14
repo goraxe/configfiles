@@ -43,7 +43,7 @@ end
 
 home = os.getenv("HOME")
 
---beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
 -- beautiful.init(home .. "/.config/awesome/themes/vinyl/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
@@ -83,7 +83,7 @@ layouts =
 tags = { }
 tags = {
     names = { "Web", "Term", "Mail", 4, 5, 6, 7, 8, 9 },
-    layout = { layouts[2], layouts[2], layouts[2], layouts[1], layouts[1], layouts[1], layouts[1], layouts[1], layouts[1] }
+    layout = { layouts[2], layouts[4], layouts[2], layouts[1], layouts[1], layouts[1], layouts[1], layouts[1], layouts[1] }
 }
 
 for s = 1, screen.count() do
@@ -487,6 +487,10 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
+
+
+    -- Screensaver
+    awful.key({ "Mod1", "Control" }, "l", function () awful.util.spawn("xscreensaver-command -lock") end),
 
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
