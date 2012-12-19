@@ -300,8 +300,16 @@ volumecfg.update()
 mytextclock = awful.widget.textclock({ align = "right" })
 
 -- Calendar widget to attach to the textclock
-require('calendar2')
-calendar2.addCalendarToWidget(mytextclock)
+--require('calendar2')
+--calendar2.addCalendarToWidget(mytextclock)
+
+require('orglendar')
+orglendar.files = { 
+    home .. "/personal/todo.org",    -- Specify here all files you want to be parsed, separated by comma.
+    home .. "/projects/todo.org",
+    home .. "/work/todo.org"
+}
+orglendar.register(mytextclock)
 
 -- Create a systray
 mysystray = widget({ type = "systray" })
