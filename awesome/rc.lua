@@ -43,8 +43,8 @@ end
 
 home = os.getenv("HOME")
 
-beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
--- beautiful.init(home .. "/.config/awesome/themes/vinyl/theme.lua")
+-- beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
+beautiful.init(home .. "/.config/awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "roxterm"
@@ -451,24 +451,35 @@ root.buttons(awful.util.table.join(
 -- }}}
 
 -- {{{ Key bindings
-globalkeys = awful.util.table.join(
-    awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
-    awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
-    awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
 
+local keydoc = require("keydoc")
+globalkeys = awful.util.table.join(
+    -- {{{ Help
+    keydoc.group("Help"),
+    awful.key({ modkey,           }, "F1", keydoc.display, "display this help"),
+    --}}}
+    --{{{ View
+    keydoc.group("View"),
+    awful.key({ modkey,           }, "Left",   awful.tag.viewprev, "move to previous view"   ),
+    awful.key({ modkey,           }, "Right",  awful.tag.viewnext, "move to next view"       ),
+    awful.key({ modkey,           }, "Escape", awful.tag.history.restore, "restore last used view (view toggle)"),
+
+    -- {{{ Focus
+    keydoc.group("Focus"),
     awful.key({ modkey,           }, "j",
         function ()
             awful.client.focus.byidx( 1)
             if client.focus then client.focus:raise() end
-        end),
+        end, 'Cycle left through window focus'),
     awful.key({ modkey,           }, "k",
         function ()
             awful.client.focus.byidx(-1)
             if client.focus then client.focus:raise() end
-        end),
+        end,'Cycle right through window focus'),
     awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end),
-
+    -- }}}
     -- Layout manipulation
+    keydoc.group("Layout manipulation"),
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end),
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
@@ -498,7 +509,8 @@ globalkeys = awful.util.table.join(
 
 
     -- Screensaver
-    awful.key({ "Mod1", "Control" }, "l", function () awful.util.spawn("xscreensaver-command -lock") end),
+    keydoc.group("Screensaver"),
+    awful.key({ "Mod1", "Control" }, "l", function () awful.util.spawn("xscreensaver-command -lock") end, "Lock screensaver"),
 
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
