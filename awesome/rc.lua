@@ -613,6 +613,7 @@ awful.rules.rules = {
     { rule = { instance = "screenruler" }, properties = {floating = true}},
     { rule = { instance = "xchat" }, properties = {tag = tags[1][3]}},
     { rule = { instance = "pidgin" }, properties = {tag = tags[1][3]}},
+    { rule = { instance = "weechat" }, properties = {tag = tags[2][3]}},
 }
 -- }}}
 
