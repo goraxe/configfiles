@@ -47,7 +47,7 @@ home = os.getenv("HOME")
 beautiful.init(home .. "/.config/awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "roxterm"
+terminal = "urxvt"
 browser = "firefox"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
@@ -198,30 +198,30 @@ vicious.register(cpuwidget, vicious.widgets.cpu,
                     end)
 
 
--- Pacman Widget
-pacwidget = widget({type = "textbox"})
-
--- Example of a button that launches chrome
---pacwidget:buttons(awful.util.table.join(
---   awful.button({ }, 1, function () awful.util.spawn("chromium") end)
---    ))
-
-pacwidget_t = awful.tooltip({ objects = { pacwidget},})
-
-vicious.register(pacwidget, vicious.widgets.pkg, 
-                function(widget,args)
-                    local io = { popen = io.popen }
-                    local s = io.popen("pacman -Qu")
-                    local str = ''
-
-                    for line in s:lines() do
-                        str = str .. line .. "\n"
-                    end
-                    pacwidget_t:set_text(str)
-                    s:close()
-                    return "UPDATES: " .. args[1]
-                end, 1800, "Ubuntu")
-
+-- -- Pacman Widget
+-- pacwidget = widget({type = "textbox"})
+-- 
+-- -- Example of a button that launches chrome
+-- --pacwidget:buttons(awful.util.table.join(
+-- --   awful.button({ }, 1, function () awful.util.spawn("chromium") end)
+-- --    ))
+-- 
+-- pacwidget_t = awful.tooltip({ objects = { pacwidget},})
+-- 
+-- vicious.register(pacwidget, vicious.widgets.pkg, 
+--                 function(widget,args)
+--                     local io = { popen = io.popen }
+--                     local s = io.popen("pacman -Qu")
+--                     local str = ''
+-- 
+--                     for line in s:lines() do
+--                         str = str .. line .. "\n"
+--                     end
+--                     pacwidget_t:set_text(str)
+--                     s:close()
+--                     return "UPDATES: " .. args[1]
+--                 end, 1800, "Ubuntu")
+-- 
 
 -- Keyboard widget
 kbdcfg = {}
@@ -613,7 +613,7 @@ awful.rules.rules = {
     { rule = { instance = "screenruler" }, properties = {floating = true}},
     { rule = { instance = "xchat" }, properties = {tag = tags[1][3]}},
     { rule = { instance = "pidgin" }, properties = {tag = tags[1][3]}},
-    { rule = { instance = "weechat" }, properties = {tag = tags[2][3]}},
+--    { rule = { instance = "weechat" }, properties = {tag = tags[2][3]}},
 }
 -- }}}
 
