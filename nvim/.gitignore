@@ -1,5 +1,7 @@
 plugin
 spell
 ftplugin
+syntax
 .luarc.json
 lazy-lock.json
+after
