@@ -434,7 +434,7 @@ globalkeys = gears.table.join(
               { description = "open a browser", group = "launcher" }),
           --
     -- Prompt
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
+    awful.key({ modkey, "Shift" },            "r",     function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),
 
     awful.key({ modkey }, "x",
@@ -447,6 +447,12 @@ globalkeys = gears.table.join(
                   }
               end,
               {description = "lua execute prompt", group = "awesome"}),
+
+    awful.key({ modkey }, "r", function () awful.spawn("rofi -show run") end,
+              { description = "launch rofi in run application"}),
+
+    awful.key({ modkey }, "d", function () awful.spawn("rofi -show drun") end,
+              { description = "launch rofi in drun"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"})
