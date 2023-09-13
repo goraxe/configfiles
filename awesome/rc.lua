@@ -1,3 +1,5 @@
+-- vim: foldmethod=marker
+--
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -41,7 +43,9 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+-- beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+
+beautiful.init("/home/goraxe/.config/awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
@@ -114,16 +118,15 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
--- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
-
 -- {{{ Wibar
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
 
-local apt_widget = require("awesome-wm-widgets.apt-widget.apt-widget")
-local calendar_widget = require("awesome-wm-widgets.calendar-widget.calendar")
+-- Keyboard map indicator and switcher
+mykeyboardlayout = awful.widget.keyboardlayout()
 
+
+local calendar_widget = require("awesome-wm-widgets.calendar-widget.calendar")
 local cw = calendar_widget({
         theme  = "dark",
         radius = 8,
@@ -134,6 +137,13 @@ mytextclock:connect_signal("button::press",
         if button == 1 then cw.toggle() end
     end)
 
+local apt_widget = require("awesome-wm-widgets.apt-widget.apt-widget")
+local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
+
+-- local github_co
+local github_contributions_widget = require('awesome-wm-widgets.github-contributions-widget.github-contributions-widget')
+
+-- {{{ taglist and tasklist buttons
 local taglist_buttons = gears.table.join(
                     awful.button({ }, 1, function(t) t:view_only() end),
                     awful.button({ modkey }, 1, function(t)
@@ -168,13 +178,17 @@ local tasklist_buttons = gears.table.join(
                                                   c:raise()
                                               end
                                           end),
-                     awful.button({ }, 3, client_menu_toggle_fn()),
+  -- DOC what this does is on right click 
+                    -- awful.button({ }, 3, client_menu_toggle_fn()),
                      awful.button({ }, 4, function ()
                                               awful.client.focus.byidx(1)
                                           end),
                      awful.button({ }, 5, function ()
                                               awful.client.focus.byidx(-1)
                                           end))
+
+-- }}}
+-- {{{ Wall paper 
 
 local function set_wallpaper(s)
     -- Wallpaper
@@ -191,14 +205,96 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
+-- }}}
+
+local tags = {}
+
+local function make_fa_icon( code )
+    icon_color = "red"
+  return wibox.widget{
+    --    font = theme.icon_font .. theme.icon_size,
+    markup = ' <span color="'.. icon_color ..'">' .. code .. '</span> ',
+    align  = 'center',
+    valign = 'center',
+    widget = wibox.widget.textbox
+  }
+end
+
+local facpuicon = make_fa_icon('\u{f2db}')
+local famemicon = make_fa_icon('\u{f538}')
+local fatempicon = make_fa_icon('\u{f2c9}')
+local faweathericon = make_fa_icon('\u{f6c4}')
+local facalicon = make_fa_icon('\u{f783}' )
+local fatimeicon = make_fa_icon('\u{f017}' )
+local terminalicon = make_fa_icon('\u{f489}')
+
+local function add_primary_screen_tags(s)
+  tags["dev"] = awful.tag.add("dev", {
+    layout = awful.layout.suit.spiral.dwindle,
+    icon = "/home/goraxe/.config/awesome/theme/octicons/icons/terminal-24.svg",
+    -- icon   =  terminalicon,
+    master_width_factor = 10,
+
+    screen = s,
+    selected = true,
+  })
+
+  tags["games"] = awful.tag.add("games", {
+    layout = awful.layout.suit.spiral.dwindle,
+    master_width_factor = 10,
+
+    screen = s,
+  })
+
+end
+
+local function add_secendary_screen_tags(s)
+
+  tags["web"] = awful.tag.add("web", {
+    layout = awful.layout.suit.spiral.dwindle,
+    master_width_factor = 10,
+
+    screen = s,
+     selected = true,
+  })
+
+  tags["comms"] = awful.tag.add("comms", {
+    layout = awful.layout.suit.spiral.dwindle,
+    master_width_factor = 10,
+
+    screen = s,
+  })
+
+  awful.tag.add("focus", {
+    layout = awful.layout.suit.spiral.dwindle,
+    master_width_factor = 10,
+
+    screen = s,
+  })
+end
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     -- TODO FIXME set a wall paper
     set_wallpaper(s)
 
+    -- print("screen primary :" .. tostring(s), s.primary, s, s.index, screen:count() )
+
     -- TODO FIXME figure out how to detect primary screen
     -- Each screen has its own tag table.
-    awful.tag({ "dev", "web", "comms", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+    -- isMulitscreen
+    if screen:count() > 1 then
+      -- is Primary
+      if s.index == 1 then
+        add_primary_screen_tags(s)
+      else
+        add_secendary_screen_tags(s)
+      end
+    else
+      add_primary_screen_tags(s)
+      add_secendary_screen_tags(s)
+    end
+
+    -- awful.tag({ "dev", "web", "comms", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -231,7 +327,9 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            github_contributions_widget({username = 'goraxe', margin_top = 15, with_border = true}),
             apt_widget(),
+            cpu_widget(),
             mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
@@ -584,6 +682,13 @@ client.connect_signal("mouse::enter", function(c)
         and awful.client.focus.filter(c) then
         client.focus = c
     end
+end)
+
+
+client.connect_signal("manage", function(c)
+    c.shape = function(cr,w,h)
+      gears.shape.rounded_rect(cr, w, h, 50)
+  end
 end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
