@@ -265,6 +265,11 @@ local function add_secendary_screen_tags(s)
     screen = s,
   })
 
+  tags["monitoring"] = awful.tag.add("monitoring", {
+    layout = awful.layout.suit.spiral.dwindle,
+    screen = s,
+  })
+
   awful.tag.add("focus", {
     layout = awful.layout.suit.spiral.dwindle,
     master_width_factor = 10,
@@ -341,9 +346,9 @@ end)
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
+    awful.button({ }, 3, function () mymainmenu:toggle() end)
+--    awful.button({ }, 4, awful.tag.viewnext),
+--    awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
 
@@ -384,14 +389,14 @@ globalkeys = gears.table.join(
               {description = "focus the previous screen", group = "screen"}),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
-    awful.key({ modkey,           }, "Tab",
-        function ()
-            awful.client.focus.history.previous()
-            if client.focus then
-                client.focus:raise()
-            end
-        end,
-        {description = "go back", group = "client"}),
+    -- awful.key({ modkey,           }, "Tab",
+    --     function ()
+    --         awful.client.focus.history.previous()
+    --         if client.focus then
+    --             client.focus:raise()
+    --         end
+    --     end,
+    --     {description = "go back", group = "client"}),
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
@@ -451,7 +456,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey }, "r", function () awful.spawn("rofi -show combi") end,
               { description = "launch rofi in run application"}),
 
-    awful.key({ modkey }, "tab", function () awful.spawn("rofi -show window") end,
+    awful.key({ modkey }, "Tab", function () awful.spawn("rofi -show window") end,
               { description = "launch rofi in drun"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
