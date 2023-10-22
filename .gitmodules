@@ -1,0 +1,3 @@
+[submodule "awesome/awesome-conky"]
+	path = awesome/awesome-conky
+	url = https://github.com/varingst/awesome-conky.git
