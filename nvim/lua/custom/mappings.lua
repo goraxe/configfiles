@@ -7,6 +7,12 @@ M.general = {
   },
 }
 
+M.telescope = {
+  n = {
+    ["<leader>ft"] = { "<cmd> Telescope <CR> ", "Open Telescope" },
+  }
+}
+
 -- more keybinds!
 
 return M

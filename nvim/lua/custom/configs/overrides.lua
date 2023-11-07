@@ -1,3 +1,5 @@
+local nvim_lsp = require('lspconfig')
+
 local M = {}
 
 M.treesitter = {
@@ -18,7 +20,9 @@ M.treesitter = {
     "gowork",
     "puppet",
     "terraform",
+    -- python
     "python",
+    "ninja",
   },
   indent = {
     enable = true,
@@ -31,6 +35,19 @@ M.treesitter = {
 M.lspconfig = {
   gopls = {
     namer = "test",
+  },
+  pylsp = {
+
+    settings = {
+      pylsp = {
+
+        plugins = {
+          jedi_completion = {
+            fuzzy = true
+          }
+        }
+      }
+    }
   },
   lua_ls = {
 
@@ -51,12 +68,20 @@ M.lspconfig = {
         },
       },
     },
+  },
+  denols = {
+    root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc")
+  },
+  tsserver = {
+    root_dir = nvim_lsp.util.root_pattern("package.json"),
+    single_file_support = flase
   }
 }
 
 M.mason = {
 
   ensure_installed = {
+    "efm",
     -- lua stuff
     "lua-language-server",
     "stylua",
@@ -67,6 +92,7 @@ M.mason = {
     "typescript-language-server",
     "deno",
     "prettier",
+    "emmet-language-server",
 
     -- c/cpp stuff
     "clangd",
@@ -76,7 +102,9 @@ M.mason = {
     "bash-language-server",
 
     -- python
-    "jedi_language_server",
+--      "jedi_language_server",
+    "pyright",
+    "ruff-lsp",
 
     -- puppet
     "puppet",

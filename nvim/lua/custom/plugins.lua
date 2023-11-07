@@ -22,6 +22,19 @@ local plugins = {
     end, -- Override to setup mason-lspconfig
   },
 
+  {
+    "tpope/vim-obsession",
+    lazy = false
+  },
+
+  {
+    "rcarriga/nvim-notify",
+    lazy = false,
+    config = function()
+      require("notify").setup()
+    end
+  },
+
   -- override plugin configs
   {
     "williamboman/mason.nvim",
@@ -82,7 +95,52 @@ local plugins = {
     "mustache/vim-mustache-handlebars",
     ft = { "mustache", "handlebars"},
     event = {"CmdlineEnter"}
-  }
+  },
+  {
+    "stevearc/dressing.nvim"
+  },
+  {
+    'creativenull/efmls-configs-nvim',
+    --version = 'v1.x.x', -- version is optional, but recommended
+    dependencies = { 'neovim/nvim-lspconfig' },
+  },
+  {
+    "aznhe21/actions-preview.nvim",
+    config = function()
+      vim.keymap.set({ "v", "n" }, "<leader>fc", require("actions-preview").code_actions)
+    end,
+    keys = {
+      {"<leader>fc",  desc ="Find Code Actions"}
+    }
+  },
+
+  {
+    'pwntester/octo.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = function ()
+      vim.notify("doing a config of octo")
+      require("telescope").load_extension('octo')
+      vim.notify("done loading config")
+    end,
+    cmd = "Telescope octo",
+  },
+
+  {
+    "nvim-telescope/telescope-media-files.nvim",
+    dependencies = {
+      'nvim-lua/popup.nvim',
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim'
+    },
+    config = function()
+      require('telescope').load_extension('media_files')
+    end,
+    cmd = "Telescope media_files",
+  },
 
   -- To make a plugin not be loaded
   -- {
