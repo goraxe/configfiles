@@ -27,4 +27,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Run Luacheck
-      uses: nebularg/actions-luacheck@v1.1.0
+      uses: nebularg/actions-luacheck@v1.1.2
