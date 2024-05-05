@@ -2,3 +2,5 @@
 *.local
 Session.vim
 test.lua
+
+nvim/lua/goraxe/foo
