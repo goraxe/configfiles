@@ -14,6 +14,7 @@ local M = {
                 "javascript",
                 "html",
                 "go",
+                "rust",
                 "sql",
                 "python",
                 "typescript",

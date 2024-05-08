@@ -1,6 +1,4 @@
 M = {
-
-
     keymaps = require("goraxe.core.keybinds")
 }
 
