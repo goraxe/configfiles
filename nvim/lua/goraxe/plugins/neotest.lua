@@ -15,12 +15,23 @@ local M = {
             "nvim-neotest/nvim-nio",
             "nvim-lua/plenary.nvim",
             "antoinemadec/FixCursorHold.nvim",
-            "nvim-treesitter/nvim-treesitter"
+            "nvim-treesitter/nvim-treesitter",
+            "nvim-neotest/neotest-jest",
+            "nvim-neotest/neotest-go",
         },
         opts = {
             adapters = {
                 'rustaceanvim.neotest',
-            }
+                ['neotest-go'] = {
+                    experimental = {
+                        test_table = true,
+                    }
+                },
+                "neotest-jest"
+            },
+            status = { virtual_text = true },
+            output = { open_on_run = true },
+            quickfix = { open = function() require("trouble").open({ mode = "quickfix", focus = false }) end },
         },
         config = function(_, opts)
             local neotest_ns = vim.api.nvim_create_namespace("neotest")

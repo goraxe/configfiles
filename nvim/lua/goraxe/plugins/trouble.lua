@@ -6,7 +6,7 @@ local M = {
         keys = {
             {
                 "<leader>xx",
-                "<cmd>Trouble diagnostics toggle<cr>",
+                "<cmd>Trouble diag toggle<cr>",
                 desc = "Diagnostics (Trouble)",
             },
             {
@@ -35,7 +35,30 @@ local M = {
                 desc = "Quickfix List (Trouble)",
             },
         },
-        opts = {}, -- for default options, refer to the configuration section for custom setup.
+        opts = {
+            ---@type table<string, trouble.mode>
+            modes = {
+
+                workspace = {
+                    mode = "workspace_diagnostics",
+                    preview = {
+                        type = "tab",
+                        relative = "win",
+                        position = "right",
+                        size = 0.3,
+                    },
+                },
+                diag = {
+                    mode = "diagnostics",
+                    preview = {
+                        type = "split",
+                        relative = "win",
+                        position = "right",
+                        size = 0.3,
+                    },
+                },
+            },
+        }, -- for default options, refer to the configuration section for custom setup.
     }
 }
 
