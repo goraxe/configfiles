@@ -11,6 +11,12 @@ local function border(hl_name)
     }
 end
 
+vim.cmd("highlight! link CmpPmenu         Pmenu")
+vim.cmd("highlight! link CmpPmenuBorder   Pmenu")
+vim.cmd("highlight! CmpPmenu         guibg=#282828")
+vim.cmd("highlight! CmpPmenuBorder   guifg=#615750")
+vim.cmd("highlight! CmpSel         guibg=#282828")
+vim.cmd("highlight! PmenuSel   guifg=#615750")
 -- TODO this needs some refactoring for sure
 
 
@@ -50,13 +56,14 @@ return {
                 sorting = defaults.sorting,
                 window = {
                     completion = {
+                        border = border "CmpDocBorder",
                         --                  side_padding = (cmp_style ~= "atom" and cmp_style ~= "atom_colored") and 1 or 0,
-                        winhighlight = "Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel",
+--                        winhighlight = "Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel",
                         scrollbar = true,
                     },
                     documentation = {
                         border = border "CmpDocBorder",
-                        winhighlight = "Normal:CmpDoc",
+--                        winhighlight = "Normal:CmpDoc",
                     },
                 },
                 snippet = {

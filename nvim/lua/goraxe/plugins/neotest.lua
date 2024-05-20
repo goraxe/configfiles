@@ -10,24 +10,38 @@ local M = {
     },
     ---@type LazyPlugin
     {
-        "nvim-neotest/neotest",
+        "goraxe/neotest",
         dependencies = {
             "nvim-neotest/nvim-nio",
             "nvim-lua/plenary.nvim",
             "antoinemadec/FixCursorHold.nvim",
             "nvim-treesitter/nvim-treesitter",
-            "nvim-neotest/neotest-jest",
-            "nvim-neotest/neotest-go",
+            "goraxe/neotest-jest",
         },
         opts = {
+            log_level = "trace",
             adapters = {
-                'rustaceanvim.neotest',
-                ['neotest-go'] = {
-                    experimental = {
-                        test_table = true,
-                    }
+                ["neotest-jest"] = {
+
+                    jestCommand = "pnpm test --",
+                    jest_test_discovery = false,
+                    jestConfigFile = "custom.jest.config.ts",
+                    env = { CI = true },
+                    cwd = function(path)
+                        -- vim.print("getting cwd " .. path .. " returning " .. vim.fn.getcwd())
+                        -- find a package.json
+                        vim.print(vim.inspect(vim.fn.globpath(path, "**/package.json")))
+
+
+                        return vim.fn.getcwd()
+                    end,
                 },
-                "neotest-jest"
+                ["neotest-go"] = {
+                    recursive_run = true,
+                    experimental = {
+                        test_table = false,
+                    },
+                },
             },
             status = { virtual_text = true },
             output = { open_on_run = true },
@@ -78,21 +92,23 @@ local M = {
                     if type(name) == "number" then
                         if type(config) == "string" then
                             config = require(config)
+                        else
                         end
                         adapters[#adapters + 1] = config
                     elseif config ~= false then
                         local adapter = require(name)
-                        if type(config) == table and not vim.tbl_isempty(config) then
+                        if type(config) == "table" and not vim.tbl_isempty(config) then
                             local meta = getmetatable(adapter)
                             if adapter.setup then
-                                adapter.setup(config)
+                                adapter = adapter.setup(config)
                             elseif meta and meta.__call then
-                                adapter(config)
+                                adapter = adapter(config)
                             else
                                 error("Adapter " .. name .. " does not have a setup function")
                             end
                         end
-                        adapters[#adapters + 1] = config
+
+                        adapters[#adapters + 1] = adapter
                     end
                 end
                 opts.adapters = adapters

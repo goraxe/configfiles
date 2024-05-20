@@ -1,4 +1,3 @@
-local merge_tb = vim.tbl_deep_extend
 local goraxe = require("goraxe.config")
 return {
     {
@@ -42,13 +41,13 @@ return {
             -- Be aware that you also will need to properly configure your LSP server to
             -- provide the inlay hints.
             inlay_hints = {
-                enabled = false,
+                enabled = true,
             },
             -- Enable this to enable the builtin LSP code lenses on Neovim >= 0.10.0
             -- Be aware that you also will need to properly configure your LSP server to
             -- provide the code lenses.
             codelens = {
-                enabled = false,
+                enabled = true,
             },
             -- add any global capabilities here
             capabilities = {},
@@ -60,14 +59,16 @@ return {
                 timeout_ms = nil,
             },
             -- LSP Server Settings
-            ---@type lspconfig.options
+            -- -@type lspconfig.options
             servers = {
                 lua_ls = {
                     -- mason = false, -- set to false if you don't want this server to be installed with mason
                     -- Use this to add any additional keymaps
                     -- for specific lsp servers
                     ---@type LazyKeysSpec[]
-                    -- keys = {},
+                    keys = {
+                    },
+                    ---@type lspconfig.settings.lua_ls
                     settings = {
                         Lua = {
                             diagnostics = {
@@ -75,10 +76,13 @@ return {
                             },
                             workspace = {
                                 library = {
-                                    [vim.fn.expand "$VIMRUNTIME/lua"] = true,
+                                    vim.fn.expand ("$VIMRUNTIME/lua",false,true),
+                                    vim.fn.expand ("$VIMRUNTIME/lua/vim/lsp",false, true),
+                                    vim.fn.stdpath ("data") .. "/lazy/lazy.nvim/lua/lazy",
+                                    --[[ [vim.fn.expand "$VIMRUNTIME/lua"] = true,
                                     [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
                                     [vim.fn.expand((vim.fn.stdpath "data") .. "/lazy/*/lua/*")] = true,
-                                    [vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy"] = true,
+                                    [vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy"] = true, ]]
                                 },
                                 maxPreload = 100000,
                                 preloadFileSize = 10000,
@@ -88,6 +92,7 @@ return {
                                 enable = true,
                             },
                             completion = {
+                                enable = true,
                                 callSnippet = "Replace",
                             },
                         },
@@ -140,7 +145,7 @@ return {
             if opts.inlay_hints.enabled then
                 require("goraxe.lsp").on_attach(function(client, buffer)
                     if client.supports_method("textDocument/inlayHint") then
-                        LazyVim.toggle.inlay_hints(buffer, true)
+                        require("goraxe.core.toggle").inlay_hints(buffer, true)
                     end
                 end)
             end

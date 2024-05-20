@@ -1,6 +1,6 @@
 M = {
     settings = {
-      Lua = {
+      ["Lua"] = {
         diagnostics = {
           globals = { "vim" },
         },

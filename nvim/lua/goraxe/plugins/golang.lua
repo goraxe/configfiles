@@ -1,4 +1,3 @@
-
 --[[ M = {
     "ray-x/go.nvim",
     dependencies = {  -- optional packages
@@ -154,20 +153,27 @@ M = {
         },
     },
     {
-        "nvim-neotest/neotest",
+        "goraxe/neotest",
         optional = true,
         dependencies = {
             "nvim-neotest/neotest-go",
         },
         opts = {
             adapters = {
+            }
+        },
+        --[[ opts = function(_, opts)
+            opts.adapters = opts.adapters or {}
+            local result = vim.list_extend(opts.adapters, {
+                "neotest-go",
                 ["neotest-go"] = {
                     -- Here we can set options for neotest-go, e.g.
                     -- args = { "-tags=integration" }
                     recursive_run = true,
                 },
-            },
-        },
+            })
+            return opts 
+        end ]]
     },
 }
 

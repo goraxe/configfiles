@@ -7,7 +7,7 @@ local M = {
                 "Saecki/crates.nvim",
                 event = { "BufRead Cargo.toml" },
                 opts = {
-                    src = {
+                    completion = {
                         cmp = { enabled = true },
                     },
                 },
@@ -61,7 +61,7 @@ local M = {
                                 enable = true,
                             },
                             extraEnv = {
-                                RUSTFLAGS = "-Cinstrument-coverage"
+                                -- RUSTFLAGS = "-Cinstrument-coverage"
                             }
                         },
                         -- Add clippy lints for Rust.
@@ -115,6 +115,22 @@ local M = {
                 end,
             },
         },
+    },
+    {
+        "goraxe/neotest",
+        optional = true,
+        --[[ opts = {
+            adapters = {
+                "rustaceanvim.neotest",
+            }
+        } ]]
+        opts = function(_, opts)
+            opts.adapters = opts.adapters or {}
+            vim.list_extend(opts.adapters, {
+                "rustaceanvim.neotest",
+            })
+            return opts
+        end,
     },
 }
 
