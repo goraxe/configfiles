@@ -41,7 +41,9 @@ local M = {
         'mrcjkb/rustaceanvim',
         version = '^4', -- Recommended
         ft = { "rust" },
+        ---@type RustaceanOpts
         opts = {
+            test_executor = "cargo llvm-cov nextest",
             server = {
                 on_attach = function(_, bufnr)
                     vim.keymap.set("n", "<leader>cR", function()
@@ -61,6 +63,7 @@ local M = {
                                 enable = true,
                             },
                             extraEnv = {
+
                                 -- RUSTFLAGS = "-Cinstrument-coverage"
                             }
                         },
@@ -132,6 +135,17 @@ local M = {
             return opts
         end,
     },
+    {
+        "folke/neoconf.nvim",
+        opts = function(_, opts)
+            opts.plugins = opts.plugins or {}
+            vim.list_extend(opts.plugins, {
+                rust_analyzer = {
+                    enabled = true,
+                }
+            })
+        end
+    }
 }
 
 
