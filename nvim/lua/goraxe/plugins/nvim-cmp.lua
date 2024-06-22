@@ -32,6 +32,7 @@ return {
                 "hrsh7th/cmp-path",
                 "hrsh7th/cmp-nvim-lua",
                 "saadparwaiz1/cmp_luasnip",
+                "zbirenbaum/copilot-cmp",
             },
 
 
@@ -58,12 +59,12 @@ return {
                     completion = {
                         border = border "CmpDocBorder",
                         --                  side_padding = (cmp_style ~= "atom" and cmp_style ~= "atom_colored") and 1 or 0,
---                        winhighlight = "Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel",
+                        --                        winhighlight = "Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel",
                         scrollbar = true,
                     },
                     documentation = {
                         border = border "CmpDocBorder",
---                        winhighlight = "Normal:CmpDoc",
+                        --                        winhighlight = "Normal:CmpDoc",
                     },
                 },
                 snippet = {
@@ -121,6 +122,7 @@ return {
                 },
                 sources = {
                     { name = "cody" },
+                    { name = "copilot" },
                     { name = "nvim_lsp" },
                     { name = "luasnip" },
                     { name = "buffer" },
@@ -181,20 +183,20 @@ return {
         opts = { history = true, updateevents = "TextChanged,TextChangedI" },
         keys = {
             {
-                "<tab>",
+                "<C-j>",
                 function()
-                    return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
+                    return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next"
                 end,
                 expr = true,
                 silent = true,
                 mode = "i",
             },
-            { "<tab>",   function() require("luasnip").jump(1) end,  mode = "s" },
-            { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
+            { "<C-j>",   function() require("luasnip").jump(1) end,  mode = "s" },
+            { "<C-k>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
         },
     },
 
-    --[[ {
+    {
         "windwp/nvim-autopairs",
         opts = {
             fast_wrap = {},
@@ -207,15 +209,25 @@ return {
             local cmp_autopairs = require "nvim-autopairs.completion.cmp"
             require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
         end,
-    }, ]]
+    },
 
     -- auto pairs
-    {
+    --[[ {
         "echasnovski/mini.pairs",
         event = "VeryLazy",
         opts = {
             mappings = {
-                ["`"] = { action = "closeopen", pair = "``", neigh_pattern = "[^\\`].", register = { cr = false } },
+                ['('] = { action = 'open', pair = '()', neigh_pattern = '[^\\].' },
+                ['['] = { action = 'open', pair = '[]', neigh_pattern = '[^\\].' },
+                ['{'] = { action = 'open', pair = '{}', neigh_pattern = '[^\\].' },
+
+                [')'] = { action = 'close', pair = '()', neigh_pattern = '[^\\].' },
+                [']'] = { action = 'close', pair = '[]', neigh_pattern = '[^\\].' },
+                ['}'] = { action = 'close', pair = '{}', neigh_pattern = '[^\\].' },
+
+                ['"'] = { action = 'closeopen', pair = '""', neigh_pattern = '[^\\].', register = { cr = false } },
+                ["'"] = { action = 'closeopen', pair = "''", neigh_pattern = '[^%a\\].', register = { cr = false } },
+                ['`'] = { action = 'closeopen', pair = '``', neigh_pattern = '[^\\].', register = { cr = false } },
             },
         },
         keys = {
@@ -228,11 +240,11 @@ return {
                     else
                         LazyVim.info("Enabled auto pairs", { title = "Option" })
                     end ]]
-                end,
+                --[[ end,
                 desc = "Toggle Auto Pairs",
             },
         },
-    },
+    }, ]]
 
     -- Fast and feature-rich surround actions. For text that includes
     -- surrounding characters like brackets or quotes, this allows you
