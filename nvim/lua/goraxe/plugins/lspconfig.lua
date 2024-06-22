@@ -61,6 +61,19 @@ return {
             -- LSP Server Settings
             -- -@type lspconfig.options
             servers = {
+                ---@type lspconfig.options.puppet
+                puppet = {
+                    cmd = {  "puppet-languageserver",  "--stdio" },
+                    cmd_env = { PATH="/opt/puppetlabs/puppet/bin:/bin:/usr/bin:/usr/local/bin" },
+                    settings = {
+                        puppet = {
+                            installDirectory = "/opt/puppetlabs/puppet/"
+                        }
+                        
+
+                    }
+
+                },
                 lua_ls = {
                     -- mason = false, -- set to false if you don't want this server to be installed with mason
                     -- Use this to add any additional keymaps
@@ -154,11 +167,14 @@ return {
             if opts.codelens.enabled and vim.lsp.codelens then
                 require("goraxe.lsp").on_attach(function(client, buffer)
                     if client.supports_method("textDocument/codeLens") then
-                        vim.lsp.codelens.refresh()
+                        vim.lsp.codelens.refresh({ bufnr = buffer })
                         --- autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()
                         vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
                             buffer = buffer,
-                            callback = vim.lsp.codelens.refresh,
+                            callback = function()
+                                vim.lsp.codelens.refresh({ bufnr = buffer })
+                            end,
+                            desc = "codelens refresh",
                         })
                     end
                 end)
