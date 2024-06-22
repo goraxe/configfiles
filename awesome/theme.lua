@@ -15,22 +15,24 @@ theme.wallpaper_cmd = { "awsetbg /usr/share/awesome/themes/zenburn/zenburn-backg
 -- }}}
 
 -- {{{ Styles
-theme.font      = "sans 16"
+theme.font      = "Hack NF 16"
 
 -- {{{ Colors
-theme.fg_normal = "#DCDCCC"
-theme.fg_focus  = "#F0DFAF"
-theme.fg_urgent = "#CC9393"
-theme.bg_normal = "#3F3F3F"
-theme.bg_focus  = "#1E2320"
+
+
+theme.fg_normal = "#b9bcb5"
+theme.fg_focus  = "#1dc8c6"
+theme.fg_urgent = "#ffaf0f"
+theme.bg_normal = "#101010"
+theme.bg_focus  = "#101010"
 theme.bg_urgent = "#3F3F3F"
 -- }}}
 
 -- {{{ Borders
 theme.useless_gap   = dpi(12)
 theme.border_width  = dpi(2)
-theme.border_normal = "#3F3F3F"
-theme.border_focus  = "#6F6F6F"
+theme.border_normal = "#17a09e"
+theme.border_focus  = "#1dc8c6"
 theme.border_marked = "#CC9393"
 -- }}}
 

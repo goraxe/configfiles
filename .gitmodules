@@ -4,3 +4,6 @@
 [submodule "awesome/conky"]
 	path = awesome/conky
 	url = https://github.com/varingst/awesome-conky.git
+[submodule "awesome/theme/octicons"]
+	path = awesome/theme/octicons
+	url = https://github.com/primer/octicons.git
