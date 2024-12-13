@@ -7,7 +7,7 @@ return {
         --        event = "LazyFile",
         event = { "BufReadPost", "BufNewFile", "BufWritePre" },
         dependencies = {
-            { "folke/neoconf.nvim", cmd = "Neoconf", config = false, dependencies = { "nvim-lspconfig" } },
+            { "folke/neoconf.nvim", cmd = "Neoconf" },
             { "folke/neodev.nvim",  opts = {} },
             "williamboman/mason-lspconfig.nvim",
             "folke/neoconf.nvim",

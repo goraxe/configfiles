@@ -3,7 +3,7 @@
 
 
 -- disable netrw at the very start of your init.lua
-vim.g.scrolloff = 10
+vim.opt.scrolloff = 10
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 

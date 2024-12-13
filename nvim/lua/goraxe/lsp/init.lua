@@ -95,7 +95,7 @@ function M.formatter(opts)
             M.format(require("lazy.core.util").merge({}, filter, { bufnr = buf }))
         end,
         sources = function(buf)
-            local clients = M.get_clients(LazyVim.merge({}, filter, { bufnr = buf }))
+            local clients = M.get_clients(goraxe.merge({}, filter, { bufnr = buf }))
             ---@param client lsp.Client
             local ret = vim.tbl_filter(function(client)
                 return client.supports_method("textDocument/formatting")
