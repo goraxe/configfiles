@@ -27,6 +27,8 @@ require("lazy").setup({
    },
   { "folke/neoconf.nvim",
     cmd = "Neoconf",
+    priority = 1000,
+    lazy = false,
     config = function(_, opts)
             require("neoconf").setup(opts)
     end
