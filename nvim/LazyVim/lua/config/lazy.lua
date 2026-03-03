@@ -14,12 +14,39 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local plugins = vim.fn.stdpath("config") .. "/LazyVim/lua/plugins"
+local config = vim.fn.stdpath("config") .. "/LazyVim/lua/config"
+
 require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
+    {
+      "sainnhe/edge",
+      priority = 1000,
+    },
     -- import/override with your plugins
-    { import = "plugins" },
+    { dir = config },
+    { dir = plugins },
+    { import = "lazyvim.plugins.extras.linting.eslint" },
+    { import = "lazyvim.plugins.extras.formatting.prettier" },
+    {
+      "neovim/nvim-lspconfig",
+      opts = {
+        servers = { eslint = {} },
+        setup = {
+          eslint = function()
+            require("snacks").util.lsp.on(function(_, client)
+              if client.name == "eslint" then
+                client.server_capabilities.documentFormattingProvider = true
+              elseif client.name == "tsserver" then
+                client.server_capabilities.documentFormattingProvider = false
+              end
+            end)
+          end,
+        },
+      },
+    },
   },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
