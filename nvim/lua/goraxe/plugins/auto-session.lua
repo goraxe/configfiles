@@ -3,13 +3,14 @@ vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,te
 
 return {
   'rmagatti/auto-session',
+    lazy = false,
     event = "VeryLazy",
   config = function()
     require("auto-session").setup {
       log_level = "error",
-      auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/"},
-      auto_save_enabled = true,
-      auto_session_use_git_branch = true,
+      suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/"},
+      auto_save = true,
+      use_git_branch = true,
       -- ⚠️ This will only work if Telescope.nvim is installed
       -- The following are already the default values, no need to provide them if these are already the settings you want.
       session_lens = {

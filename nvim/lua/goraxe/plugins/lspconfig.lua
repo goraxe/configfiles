@@ -8,7 +8,7 @@ return {
         event = { "BufReadPost", "BufNewFile", "BufWritePre" },
         dependencies = {
             { "folke/neoconf.nvim", cmd = "Neoconf" },
-            { "folke/neodev.nvim",  opts = {} },
+            { "folke/lazydev.nvim", opts = {} },
             "williamboman/mason-lspconfig.nvim",
             "folke/neoconf.nvim",
         },
@@ -63,13 +63,13 @@ return {
             servers = {
                 ---@type lspconfig.options.puppet
                 puppet = {
-                    cmd = {  "puppet-languageserver",  "--stdio" },
-                    cmd_env = { PATH="/opt/puppetlabs/puppet/bin:/bin:/usr/bin:/usr/local/bin" },
+                    cmd = { "puppet-languageserver", "--stdio" },
+                    cmd_env = { PATH = "/opt/puppetlabs/puppet/bin:/bin:/usr/bin:/usr/local/bin" },
                     settings = {
                         puppet = {
                             installDirectory = "/opt/puppetlabs/puppet/"
                         }
-                        
+
 
                     }
 
@@ -89,9 +89,9 @@ return {
                             },
                             workspace = {
                                 library = {
-                                    vim.fn.expand ("$VIMRUNTIME/lua",false,true),
-                                    vim.fn.expand ("$VIMRUNTIME/lua/vim/lsp",false, true),
-                                    vim.fn.stdpath ("data") .. "/lazy/lazy.nvim/lua/lazy",
+                                    vim.fn.expand("$VIMRUNTIME/lua", false, true),
+                                    vim.fn.expand("$VIMRUNTIME/lua/vim/lsp", false, true),
+                                    vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy",
                                     --[[ [vim.fn.expand "$VIMRUNTIME/lua"] = true,
                                     [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
                                     [vim.fn.expand((vim.fn.stdpath "data") .. "/lazy/*/lua/*")] = true,
@@ -140,7 +140,7 @@ return {
                 local ret = register_capability(err, res, ctx)
                 local client = vim.lsp.get_client_by_id(ctx.client_id)
                 local buffer = vim.api.nvim_get_current_buf()
-                vim.print(require("goraxe.lsp.keymaps"))
+                --                vim.print(require("goraxe.lsp.keymaps"))
                 require("goraxe.lsp.keymaps").on_attach(client, buffer)
                 return ret
             end
@@ -246,6 +246,15 @@ return {
                 mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
             end
 
+            for _, method in ipairs({ 'textDocument/diagnostic', 'workspace/diagnostic' }) do
+                local default_diagnostic_handler = vim.lsp.handlers[method]
+                vim.lsp.handlers[method] = function(err, result, context, config)
+                    if err ~= nil and err.code == -32802 then
+                        return
+                    end
+                    return default_diagnostic_handler(err, result, context, config)
+                end
+            end
 
             --[[ require("mason-lspconfig").setup_handlers {
                 -- The first entry (without a key) will be the default handler

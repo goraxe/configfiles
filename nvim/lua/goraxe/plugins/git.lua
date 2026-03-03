@@ -62,7 +62,7 @@ local M = {
             end
         },
         config = function(_, opts)
-            vim.print(vim.inspect(opts))
+--            vim.print(vim.inspect(opts))
             require("gitsigns").setup(opts)
         end
     }

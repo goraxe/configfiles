@@ -48,8 +48,8 @@ return {
             end,
             desc = "find help tags"
         },
-        { '<leader>t', ":Telescope<Cr>", desc = "open telescope"
-        }
+        -- { '<leader>t', ":Telescope<Cr>", desc = "open telescope"
+        -- }
     },
     opts = {
         defaults = {

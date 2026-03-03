@@ -34,12 +34,12 @@ return {
             f = { "<cmd>DapUiFloat<cr>", "Debug UI Float"}
 
         },
-        ["/"] = {
-          function()
-            require("Comment.api").toggle.linewise.current()
-          end,
-          "Toggle comment",
-        },
+        -- ["/"] = {
+        --   function()
+        --     require("Comment.api").toggle.linewise.current()
+        --   end,
+        --   "Toggle comment",
+        -- },
     },
     { prefix = "<leader>" }
 }
