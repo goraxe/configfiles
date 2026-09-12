@@ -43,6 +43,25 @@ mytextclock:connect_signal("button::press",
 
 local apt_widget = require("awesome-wm-widgets.apt-widget.apt-widget")
 local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
+local pactl_widget = require("awesome-wm-widgets.pactl-widget.volume")
+
+-- Conditionally load battery widget (only on devices with a battery)
+local batteryarc_widget
+if gears.filesystem.dir_readable("/sys/class/power_supply/BAT0") then
+    batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
+end
+
+-- Conditionally load wifi widget (only on devices with wlan0)
+local iwd_wifi_widget
+if gears.filesystem.is_dir("/sys/class/net/wlan0") then
+    iwd_wifi_widget = require("widgets.iwd_wifi")
+end
+
+-- Conditionally load bluetooth widget (only if bluetoothctl is available)
+local bluetooth_widget
+if os.execute("which bluetoothctl >/dev/null 2>&1") then
+    bluetooth_widget = require("widgets.bluetooth")
+end
 
 -- local github_co
 local github_contributions_widget = require('awesome-wm-widgets.github-contributions-widget.github-contributions-widget')
@@ -292,6 +311,7 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            spacing = 8,
             github_contributions_widget({username = 'goraxe', margin_top = 15, with_border = true}),
             conky.widget({
               label = "conky:",
@@ -301,6 +321,10 @@ awful.screen.connect_for_each_screen(function(s)
             }),
             apt_widget(),
             cpu_widget(),
+            pactl_widget({ widget_type = 'icon_and_text', device = '@DEFAULT_SINK@' }),
+            bluetooth_widget and bluetooth_widget() or nil,
+            iwd_wifi_widget and iwd_wifi_widget() or nil,
+            batteryarc_widget and batteryarc_widget({ show_current_level = true, show_notification_mode = 'on_hover' }) or nil,
             mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
